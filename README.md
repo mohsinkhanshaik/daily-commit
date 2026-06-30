@@ -1,2 +1,2 @@
-# daily-commit
+# hi
 A small Python starter project.
