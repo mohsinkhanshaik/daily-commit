@@ -2,7 +2,7 @@
 
 Small, single-file improvements for this Python starter project. Each item can be implemented in one edit through the GitHub web editor. Runs pick the first unchecked item.
 
-- [ ] Refactor main.py into functions (build_greeting, main)
+- [x] Refactor main.py into functions (build_greeting, main)
 - [ ] Add a __main__ guard to main.py
 - [ ] Add module and function docstrings to main.py
 - [ ] Add type hints to main.py
