@@ -3,6 +3,14 @@
 
 from datetime import date
 
-greeting = "Hello from daily-commit!"
-print(greeting)
-print("Committed on " + date.today().isoformat())
+
+def build_greeting():
+      return "Hello from daily-commit!"
+
+
+def main():
+      print(build_greeting())
+      print("Committed on " + date.today().isoformat())
+
+
+main()
