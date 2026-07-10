@@ -13,4 +13,5 @@ def main():
     print("Committed on " + date.today().isoformat())
 
 
-main()
+if __name__ == "__main__":
+    main()
