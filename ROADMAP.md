@@ -5,7 +5,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Refactor main.py into functions (build_greeting, main)
 - [x] Add a __main__ guard to main.py
 - [x] Add module and function docstrings to main.py
-- [ ] Add type hints to main.py
+- [x] Add type hints to main.py
 - [ ] Add a __version__ string to main.py
 - [ ] Add a time-of-day greeting (morning/afternoon/evening) to main.py
 - [ ] Add multilingual greetings with a language constant
