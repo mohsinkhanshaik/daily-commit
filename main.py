@@ -3,12 +3,12 @@
 from datetime import date
 
 
-def build_greeting():
+def build_greeting() -> str:
     """Return the greeting message printed by the script."""
     return "Hello from daily-commit!"
 
 
-def main():
+def main() -> None:
     """Print the greeting and today's date."""
     print(build_greeting())
     print("Committed on " + date.today().isoformat())
