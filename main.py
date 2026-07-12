@@ -2,6 +2,8 @@
 
 from datetime import date
 
+__version__ = "0.1.0"
+
 
 def build_greeting() -> str:
     """Return the greeting message printed by the script."""
