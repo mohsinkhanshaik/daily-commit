@@ -1,13 +1,23 @@
 """daily-commit: a small Python starter script."""
 
-from datetime import date
+from datetime import date, datetime
 
 __version__ = "0.1.0"
 
 
+def time_of_day() -> str:
+    """Return a greeting word based on the current hour."""
+    hour = datetime.now().hour
+    if hour < 12:
+        return "Good morning"
+    if hour < 18:
+        return "Good afternoon"
+    return "Good evening"
+
+
 def build_greeting() -> str:
     """Return the greeting message printed by the script."""
-    return "Hello from daily-commit!"
+    return time_of_day() + " from daily-commit!"
 
 
 def main() -> None:
@@ -18,3 +28,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    
