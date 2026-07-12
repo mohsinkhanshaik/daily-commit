@@ -7,7 +7,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add module and function docstrings to main.py
 - [x] Add type hints to main.py
 - [x] Add a __version__ string to main.py
-- [ ] Add a time-of-day greeting (morning/afternoon/evening) to main.py
+- [x] Add a time-of-day greeting (morning/afternoon/evening) to main.py
 - [ ] Add multilingual greetings with a language constant
 - [ ] Add an argparse CLI with a --name option
 - [ ] Add input validation and error handling for CLI arguments
