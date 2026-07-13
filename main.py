@@ -1,6 +1,8 @@
 """daily-commit: a small Python starter script."""
 
+import argparse
 from datetime import date, datetime
+from typing import Optional
 
 __version__ = "0.1.0"
 
@@ -26,14 +28,26 @@ def time_of_day() -> str:
     return evening
 
 
-def build_greeting() -> str:
+def build_greeting(name: Optional[str] = None) -> str:
     """Return the greeting message printed by the script."""
+    if name:
+        return f"{time_of_day()}, {name}, from daily-commit!"
     return time_of_day() + " from daily-commit!"
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the script."""
+    parser = argparse.ArgumentParser(
+        description="Print a time-of-day greeting and today's date."
+    )
+    parser.add_argument("--name", help="name to include in the greeting")
+    return parser.parse_args()
 
 
 def main() -> None:
     """Print the greeting and today's date."""
-    print(build_greeting())
+    args = parse_args()
+    print(build_greeting(args.name))
     print("Committed on " + date.today().isoformat())
 
 
