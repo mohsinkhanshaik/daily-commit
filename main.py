@@ -4,15 +4,26 @@ from datetime import date, datetime
 
 __version__ = "0.1.0"
 
+# Language code used for greetings. Supported: "en", "es", "fr".
+LANGUAGE = "en"
+
+# Time-of-day greetings per language: (morning, afternoon, evening).
+GREETINGS = {
+    "en": ("Good morning", "Good afternoon", "Good evening"),
+    "es": ("Buenos días", "Buenas tardes", "Buenas noches"),
+    "fr": ("Bonjour", "Bon après-midi", "Bonsoir"),
+}
+
 
 def time_of_day() -> str:
-    """Return a greeting word based on the current hour."""
+    """Return a greeting for the current hour in the LANGUAGE language."""
+    morning, afternoon, evening = GREETINGS.get(LANGUAGE, GREETINGS["en"])
     hour = datetime.now().hour
     if hour < 12:
-        return "Good morning"
+        return morning
     if hour < 18:
-        return "Good afternoon"
-    return "Good evening"
+        return afternoon
+    return evening
 
 
 def build_greeting() -> str:
@@ -28,4 +39,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
