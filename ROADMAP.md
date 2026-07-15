@@ -14,7 +14,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add an argparse CLI with a --name optionh
 - [x] Add input validation and error handling for CLI arguments
 - [x] Add logging via the logging module
-- [ ] Add a constants.py module for shared constants
+- [x] Add a constants.py module for shared constants
 - [ ] Add tests/test_main.py with unit tests for build_greeting
 - [ ] Extend tests to cover time-of-day logic
 - [ ] Add optional config file support (config.json)
