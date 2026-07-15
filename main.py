@@ -1,11 +1,15 @@
 """daily-commit: a small Python starter script."""
 
 import argparse
+import logging
 import sys
 from datetime import date, datetime
 from typing import Optional
 
 __version__ = "0.1.0"
+
+# Configure module-level logger.
+logger = logging.getLogger(__name__)
 
 # Language code used for greetings. Supported: "en", "es", "fr".
 LANGUAGE = "en"
@@ -30,6 +34,7 @@ def time_of_day() -> str:
     """Return a greeting for the current hour in the LANGUAGE language."""
     morning, afternoon, evening = GREETINGS.get(LANGUAGE, GREETINGS["en"])
     hour = datetime.now().hour
+    logger.debug("Current hour: %d, language: %s", hour, LANGUAGE)
     if hour < 12:
         return morning
     if hour < 18:
@@ -39,9 +44,13 @@ def time_of_day() -> str:
 
 def build_greeting(name: Optional[str] = None) -> str:
     """Return the greeting message printed by the script."""
+    greeting = time_of_day()
     if name:
-        return f"{time_of_day()}, {name}, from daily-commit!"
-    return time_of_day() + " from daily-commit!"
+        result = f"{greeting}, {name}, from daily-commit!"
+    else:
+        result = greeting + " from daily-commit!"
+    logger.info("Generated greeting: %s", result)
+    return result
 
 
 def parse_args() -> argparse.Namespace:
@@ -57,6 +66,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """Print the greeting and today's date."""
+    logging.basicConfig(
+        level=logging.WARNING,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    )
+    logger.info("Starting daily-commit v%s", __version__)
     try:
         args = parse_args()
         print(build_greeting(args.name))
@@ -64,6 +78,7 @@ def main() -> None:
     except KeyboardInterrupt:
         sys.exit(130)
     except Exception as exc:
+        logger.error("Unhandled error: %s", exc)
         print(f"Error: {exc}", file=sys.stderr)
         sys.exit(1)
 
