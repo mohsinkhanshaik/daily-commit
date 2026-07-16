@@ -16,7 +16,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add logging via the logging module
 - [x] Add a constants.py module for shared constants
 - [x] Add tests/test_main.py with unit tests for build_greeting
-- [ ] Extend tests to cover time-of-day logic
+- [x] Extend tests to cover time-of-day logic
 - [ ] Add optional config file support (config.json)
 - [ ] Add a .gitignore for Python artifacts
 - [ ] Add a CHANGELOG.md tracking notable changes
