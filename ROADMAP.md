@@ -22,7 +22,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add tests/test_main.py with unit tests for build_greeting
 - [x] Extend tests to cover time-of-day logic
 - [x] Add optional config file support (config.json)
-- [ ] Add a .gitignore for Python artifacts
+- [x] Add a .gitignore for Python artifacts
 - [ ] Add a CHANGELOG.md tracking notable changes
 - [ ] Add a usage section to README.md
 - [ ] Add an examples section with sample output to README.md
