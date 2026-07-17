@@ -1,7 +1,9 @@
 """daily-commit: a small Python starter script."""
 
 import argparse
+import json
 import logging
+import os
 import sys
 from datetime import date, datetime
 from typing import Optional
@@ -20,6 +22,20 @@ GREETINGS = {
     "es": ("Buenos días", "Buenas tardes", "Buenas noches"),
     "fr": ("Bonjour", "Bon après-midi", "Bonsoir"),
 }
+
+
+def load_config() -> dict:
+    """Load optional settings from config.json if it exists next to this script."""
+    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+    if os.path.isfile(config_path):
+        try:
+            with open(config_path, encoding="utf-8") as fh:
+                config = json.load(fh)
+            logger.info("Loaded config from %s", config_path)
+            return config
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning("Could not load config.json: %s", exc)
+    return {}
 
 
 def validate_name(name: str) -> str:
@@ -66,14 +82,22 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """Print the greeting and today's date."""
+    global LANGUAGE
     logging.basicConfig(
         level=logging.WARNING,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
     logger.info("Starting daily-commit v%s", __version__)
+
+    # Load optional config file.
+    config = load_config()
+    if "language" in config:
+        LANGUAGE = config["language"]
+
     try:
         args = parse_args()
-        print(build_greeting(args.name))
+        name = args.name or config.get("name")
+        print(build_greeting(name))
         print("Committed on " + date.today().isoformat())
     except KeyboardInterrupt:
         sys.exit(130)
