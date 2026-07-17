@@ -1,7 +1,11 @@
 # Roadmap
 
 
+
+
 Small, single-file improvements for this Python starter project. Each item can be implemented in one edit through the GitHub web editor. Runs pick the first unchecked item.
+
+
 
 
 - [x] Refactor main.py into functions (build_greeting, main)
@@ -17,11 +21,13 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add a constants.py module for shared constants
 - [x] Add tests/test_main.py with unit tests for build_greeting
 - [x] Extend tests to cover time-of-day logic
-- [ ] Add optional config file support (config.json)
+- [x] Add optional config file support (config.json)
 - [ ] Add a .gitignore for Python artifacts
 - [ ] Add a CHANGELOG.md tracking notable changes
 - [ ] Add a usage section to README.md
 - [ ] Add an examples section with sample output to README.md
 - [ ] Add pyproject.toml with project metadata
 - [ ] Add a --format flag to control the date output format
+
+
 
