@@ -24,7 +24,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add optional config file support (config.json)
 - [x] Add a .gitignore for Python artifacts
 - [x] Add a CHANGELOG.md tracking notable changes
-- [ ] Add a usage section to README.md
+- [x] Add a usage section to README.mdh
 - [ ] Add an examples section with sample output to README.md
 - [ ] Add pyproject.toml with project metadata
 - [ ] Add a --format flag to control the date output format
