@@ -14,7 +14,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add type hints to main.py
 - [x] Add a __version__ string to main.py
 - [x] Add a time-of-day greeting (morning/afternoon/evening) to main.py
-- [x] Add multilingual greetings with a language constant
+- [x] Add multilingual greetings with a languahge constant
 - [x] Add an argparse CLI with a --name optionh
 - [x] Add input validation and error handling for CLI arguments
 - [x] Add logging via the logging module
@@ -23,7 +23,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Extend tests to cover time-of-day logic
 - [x] Add optional config file support (config.json)
 - [x] Add a .gitignore for Python artifacts
-- [ ] Add a CHANGELOG.md tracking notable changes
+- [x] Add a CHANGELOG.md tracking notable changes
 - [ ] Add a usage section to README.md
 - [ ] Add an examples section with sample output to README.md
 - [ ] Add pyproject.toml with project metadata
