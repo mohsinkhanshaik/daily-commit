@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daily-commit"
+version = "0.1.0"
+description = "A small Python starter script that prints a time-of-day greeting and today's date."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+    {name = "mohsinkhanshaik"}
+    ]
+    keywords = ["greeting", "daily", "starter"]
+
+    [project.scripts]
+    daily-commit = "main:main"
