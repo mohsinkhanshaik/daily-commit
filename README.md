@@ -44,3 +44,41 @@ Set the `language` key in `config.json` to change the greeting language:
 | `en` | English (default) |
 | `es` | Spanish |
 | `fr` | French |
+
+## Examples
+
+Below are sample terminal sessions showing different ways to run the script.
+
+**Default (no arguments):**
+
+```
+$ python main.py
+Good morning from daily-commit!
+Committed on 2026-07-18
+```
+
+**Personalized greeting with `--name`:**
+
+```
+$ python main.py --name Alice
+Good morning, Alice, from daily-commit!
+Committed on 2026-07-18
+```
+
+**Spanish greeting via `config.json`:**
+
+With `config.json` set to `{"name": "Carlos", "language": "es"}`:
+
+```
+$ python main.py
+Buenos días, Carlos, from daily-commit!
+Committed on 2026-07-18
+```
+
+**Evening run (after 18:00):**
+
+```
+$ python main.py --name Bob
+Good evening, Bob, from daily-commit!
+Committed on 2026-07-18
+```
