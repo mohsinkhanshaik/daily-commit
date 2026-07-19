@@ -26,7 +26,7 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add a CHANGELOG.md tracking notable changesh
 - [x] Add a usage section to README.mdh
 - [x] Add an examples section with sample output to README.md
-- [ ] Add pyproject.toml with project metadata
+- [x] Add pyproject.toml with project metadata
 - [ ] Add a --format flag to control the date output format
 
 
