@@ -16,6 +16,9 @@ logger = logging.getLogger(__name__)
 # Language code used for greetings. Supported: "en", "es", "fr".
 LANGUAGE = "en"
 
+# Default strftime pattern used when --format is not supplied.
+DEFAULT_DATE_FORMAT = "%Y-%m-%d"
+
 # Time-of-day greetings per language: (morning, afternoon, evening).
 GREETINGS = {
     "en": ("Good morning", "Good afternoon", "Good evening"),
@@ -31,8 +34,8 @@ def load_config() -> dict:
         try:
             with open(config_path, encoding="utf-8") as fh:
                 config = json.load(fh)
-            logger.info("Loaded config from %s", config_path)
-            return config
+                logger.info("Loaded config from %s", config_path)
+                return config
         except (json.JSONDecodeError, OSError) as exc:
             logger.warning("Could not load config.json: %s", exc)
     return {}
@@ -44,6 +47,17 @@ def validate_name(name: str) -> str:
     if not stripped:
         raise argparse.ArgumentTypeError("name must not be empty or whitespace-only")
     return stripped
+
+
+def validate_date_format(fmt: str) -> str:
+    """Validate that --format is a usable, non-empty strftime pattern."""
+    if not fmt.strip():
+        raise argparse.ArgumentTypeError("format must not be empty or whitespace-only")
+    try:
+        date.today().strftime(fmt)
+    except (ValueError, TypeError) as exc:
+        raise argparse.ArgumentTypeError(f"invalid date format: {exc}")
+    return fmt
 
 
 def time_of_day() -> str:
@@ -69,6 +83,11 @@ def build_greeting(name: Optional[str] = None) -> str:
     return result
 
 
+def format_date(fmt: str = DEFAULT_DATE_FORMAT) -> str:
+    """Return today's date rendered with the given strftime pattern."""
+    return date.today().strftime(fmt)
+
+
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments for the script."""
     parser = argparse.ArgumentParser(
@@ -76,6 +95,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--name", type=validate_name, help="name to include in the greeting"
+    )
+    parser.add_argument(
+        "--format",
+        dest="date_format",
+        type=validate_date_format,
+        default=DEFAULT_DATE_FORMAT,
+        help="strftime pattern for the date output (default: %(default)s)",
     )
     return parser.parse_args()
 
@@ -98,7 +124,7 @@ def main() -> None:
         args = parse_args()
         name = args.name or config.get("name")
         print(build_greeting(name))
-        print("Committed on " + date.today().isoformat())
+        print("Committed on " + format_date(args.date_format))
     except KeyboardInterrupt:
         sys.exit(130)
     except Exception as exc:
