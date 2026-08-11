@@ -1,12 +1,6 @@
 # Roadmap
 
-
-
-
 Small, single-file improvements for this Python starter project. Each item can be implemented in one edit through the GitHub web editor. Runs pick the first unchecked item.
-
-
-
 
 - [x] Refactor main.py into functions (build_greeting, main)
 - [x] Add a __main__ guard to main.py
@@ -27,7 +21,4 @@ Small, single-file improvements for this Python starter project. Each item can b
 - [x] Add a usage section to README.mdh
 - [x] Add an examples section with sample output to README.md
 - [x] Add pyproject.toml with project metadata
-- [ ] Add a --format flag to control the date output format
-
-
-
+- [x] Add a --format flag to control the date output format
