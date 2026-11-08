@@ -1,82 +1,67 @@
-"""Render AI Pulse digests to markdown format.
+"""Render Digest objects back to canonical digest markdown.
 
-This module provides functions to convert Digest model objects back to markdown,
-enabling report generation and template-based rendering of AI industry analysis.
+The day-15 renderer could not be imported from the toolkit (it used
+`from aipulse.models import ...` while every other module uses flat
+imports), and render_by_category() called digest.by_category() with no
+argument, which raised TypeError on the old Digest. Both are fixed, and
+the renderer now produces the full canonical format so that
+render_digest(parse_digest(text)) round-trips:
+
+- the intro line and the closing "Trend watch:" line are emitted (they
+  were dropped, so a rendered digest failed validate.py);
+- "Source: Name (url)" is written exactly as the parser reads it;
+- categories render in a fixed editorial order instead of dict order.
 """
 
-from datetime import date
-from aipulse.models import Digest
+from models import Category, Digest
+
+ORDER = [Category.MODELS, Category.CHIPS, Category.FUNDING, Category.POLICY,
+         Category.RESEARCH, Category.PRODUCTS, Category.OTHER]
+
+
+def source_line(item):
+    name = item.source or "Unknown"
+    return "Source: %s (%s)" % (name, item.url) if item.url else "Source: " + name
 
 
 def render_digest(digest: Digest) -> str:
-    """Render a Digest object to markdown string.
-
-    Args:
-        digest: A Digest model object with date and items.
-
-    Returns:
-        A markdown-formatted string representing the digest.
-    """
-    lines = [f"# AI Pulse - {digest.day.isoformat()}"]
-    lines.append("")
-
+    lines = ["# AI Pulse - " + digest.day.isoformat(), ""]
+    if digest.intro:
+        lines += [digest.intro, ""]
     if not digest.items:
         lines.append("No items recorded for this date.")
-        return "\n".join(lines)
-
     for item in digest.items:
-        lines.append(f"## {item.headline}")
-        lines.append("")
-        lines.append(item.summary)
-        lines.append("")
-        if item.url:
-            lines.append(f"Source: {item.source or 'Unknown'} ({item.url})")
-        else:
-            lines.append(f"Source: {item.source or 'Unknown'}")
-        lines.append("")
-
-    return "\n".join(lines)
+        lines += ["## " + item.headline, item.summary, source_line(item), ""]
+    if digest.trend_watch:
+        lines.append("Trend watch: " + digest.trend_watch)
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def render_by_category(digest: Digest) -> dict:
-    """Group and render digest items by category.
-
-    Args:
-        digest: Digest model object.
-
-    Returns:
-        Dict mapping category names to markdown strings.
-    """
+    """{category value: markdown block}, in editorial ORDER."""
+    grouped = digest.by_category()
     result = {}
-    categories = digest.by_category()
-    for cat, items in categories.items():
-        lines = [f"## {cat.value.title()}", ""]
-        for item in items:
-            lines.append(f"### {item.headline}")
-            lines.append(item.summary)
-            lines.append("")
-        result[cat.value] = "\n".join(lines)
+    for cat in ORDER:
+        if cat not in grouped:
+            continue
+        lines = ["## " + cat.value.title(), ""]
+        for item in grouped[cat]:
+            lines += ["### " + item.headline, item.summary, source_line(item), ""]
+        result[cat.value] = "\n".join(lines).rstrip() + "\n"
     return result
 
 
 if __name__ == "__main__":
-    from datetime import date
-    from aipulse.models import Digest, NewsItem, Category
-
-    digest = Digest(day=date.today())
-    digest.add(NewsItem(
-        headline="AI Model Pricing Down 80%",
-        summary="Frontier labs cut costs dramatically. Why it matters: cheaper access drives adoption.",
-        source="TechNews",
-        url="https://example.com/1",
-        category=Category.RESEARCH
-    ))
-    digest.add(NewsItem(
-        headline="Chip Shortage Easing in Q3",
-        summary="Supply constraints improving. Why it matters: infrastructure deployment accelerates.",
-        source="SemiWatch",
-        url="https://example.com/2",
-        category=Category.CHIPS
-    ))
-
-    print(render_digest(digest))
+    from archive import DEFAULT_DIR
+    from digest_parser import parse_digest
+    from validate import validate_format
+    text = (DEFAULT_DIR / "2026-11-07.md").read_text(encoding="utf-8")
+    digest = parse_digest(text)
+    rendered = render_digest(digest)
+    again = parse_digest(rendered)
+    same = [(i.headline, i.summary, i.url) for i in digest.items] == \
+           [(i.headline, i.summary, i.url) for i in again.items]
+    errors = [f for f in validate_format(rendered, "2026-11-07.md") if f[0] == "ERROR"]
+    print("round-trip identical:", same, "| validator errors:", len(errors))
+    print("categories:", list(render_by_category(digest)))
+    print(rendered[:300])

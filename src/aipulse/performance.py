@@ -4,8 +4,9 @@ Tracks inference latency, throughput, error rates, and token counts across
 digest processing pipelines. Provides per-module statistics and anomaly alerts.
 """
 
+import math
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from enum import Enum
 
@@ -39,7 +40,7 @@ class MetricsSeries:
 
     def add(self, value: float, timestamp: Optional[datetime] = None) -> None:
         """Record a metric value."""
-        ts = timestamp or datetime.utcnow()
+        ts = timestamp or datetime.now(timezone.utc)
         self.observations.append((ts, value))
 
     def mean(self) -> float:
@@ -53,12 +54,14 @@ class MetricsSeries:
         if not self.observations:
             return 0.0
         sorted_vals = sorted(v for _, v in self.observations)
-        idx = int(len(sorted_vals) * 0.95)
-        return sorted_vals[idx] if idx < len(sorted_vals) else sorted_vals[-1]
+        # Nearest-rank percentile: ceil(0.95 * n) - 1. The old int(n * 0.95)
+        # returned the maximum for n = 20, 40, ... (an off-by-one high).
+        idx = max(0, math.ceil(0.95 * len(sorted_vals)) - 1)
+        return sorted_vals[idx]
 
     def recent(self, minutes: int = 5) -> list:
         """Observations in the last N minutes."""
-        cutoff = datetime.utcnow() - timedelta(minutes=minutes)
+        cutoff = datetime.now(timezone.utc) - timedelta(minutes=minutes)
         return [(ts, v) for ts, v in self.observations if ts >= cutoff]
 
 
